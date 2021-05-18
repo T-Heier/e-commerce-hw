@@ -37,15 +37,36 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Products
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // create a new category
+  try {
+    const catData = await Catergory.create(req.body);
+    res.status(200).json(catData)
+  } catch {
+    res.status(404).json({ message: 'Something went wrong, failed to create!' });
+  }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a category by its `id` value
+  try {
+    const catData = await Category.update(
+      {
+        catergory_name: req.body.catergory_name,
+      },
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    )
+    res.status(200).json(catData)
+  } catch {
+    res.status(404).json({ message: 'Failed to find item with that id!' })
+  }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
 });
 
