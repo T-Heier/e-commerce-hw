@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   // find one category by its `id` value
   try {
-    const catData = await Driver.findByPk(req.params.id, {
+    const catData = await Catergory.findByPk(req.params.id, {
       include: [{ model: Product }],
     });
     
@@ -68,6 +68,16 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+  try {
+    const catData = await Catergory.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    res.status(200).json(catData)
+  } catch {
+    res.status(404).json({ message: 'Failed to delete, no id matched' })
+  }
 });
 
 module.exports = router;
